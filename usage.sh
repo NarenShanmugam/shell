@@ -2,17 +2,17 @@
 echo `date`
 TO="a.narenshanmugam@gmail.com"
 #cpu use threshold
-cpu_threshold='25'
+cpu_threshold='330'
  #mem idle threshold
-mem_threshold='50'
+mem_threshold='400'
  #disk use threshold
-disk_threshold='25'
+disk_threshold='250'
 #---cpu
 cpu_usage () {
 cpu_idle=`top -b -n 1 | grep Cpu | awk '{print $8}'|cut -f 1 -d "."`
 cpu_use=`expr 100 - $cpu_idle`
  echo "cpu utilization: $cpu_use"
-if [ $cpu_use -gt $cpu_threshold ]
+if [ $cpu_use -lt $cpu_threshold ]
 then
         echo "cpu warning!!!"|sendmail $TO
     else
@@ -35,7 +35,7 @@ fi
 disk_usage () {
 disk_use=`df -P | grep /dev | grep -v -E '(tmp|boot)' | awk '{print $5}' | cut -f 1 -d "%"`
  echo "disk usage : $disk_use" 
-if [ $disk_use -gt $disk_threshold ]
+if [ $disk_use -lt $disk_threshold ]
     then
         echo "disk warning!!!"|sendmail $TO
     else
